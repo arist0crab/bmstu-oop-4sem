@@ -9,7 +9,7 @@ FORMS_DIR = forms
 
 # Пути для компиляции
 INCLUDEPATH += $$HEADERS_DIR
-UI_DIR = $$FORMS_DIR
+UI_DIR = $$HEADERS_DIR
 
 # Файлы проекта
 SOURCES += $$files($$SOURCES_DIR/*.cpp)

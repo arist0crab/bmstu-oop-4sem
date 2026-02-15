@@ -2,23 +2,22 @@
 #define MAINWIDGET_H
 
 #include <QWidget>
+#include <QGridLayout>
 
-class QPushButton;
-class QTextBrowser;
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainWidget; }
+QT_END_NAMESPACE
 
-// This is the declaration of our MainWidget class
-// The definition/implementation is in mainwidget.cpp
 class MainWidget : public QWidget
 {
     Q_OBJECT
 
-public:
-    explicit MainWidget(QWidget *parent = 0); //Constructor
-    ~MainWidget(); // Destructor
+    public:
+        explicit MainWidget(QWidget *parent = nullptr);
+        ~MainWidget();
 
-private:
-   QPushButton* button_;
-   QTextBrowser* textBrowser_;
-};
+    private:
+        Ui::MainWidget *ui; 
+}
 
-#endif // MAINWIDGET_H
+#endif

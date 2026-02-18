@@ -1,5 +1,5 @@
-#ifndef DESCRIPTION_H
-#define DESCRIPTION_H
+#ifndef __DESCRIPTION_H__
+#define __DESCRIPTION_H__
 
 namespace Description
 {

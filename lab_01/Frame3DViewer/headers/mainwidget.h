@@ -1,11 +1,13 @@
-#ifndef MAINWIDGET_H
-#define MAINWIDGET_H
+#ifndef __MAINWIDGET_H__
+#define __MAINWIDGET_H__
 
 #include "status.h"
+#include "figure.h"
 #include <QWidget>
 #include <QGridLayout>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QGraphicsScene>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWidget; }
@@ -16,11 +18,14 @@ class MainWidget : public QWidget
     Q_OBJECT
 
     public:
-        explicit MainWidget(QWidget *parent = nullptr);
+        explicit MainWidget(figure_t &figure, QWidget *parent = nullptr);
         ~MainWidget();
+
+        status_t draw();
 
     private:
         Ui::MainWidget *ui; 
+        figure_t figure;
 
     private slots:
         // обработка нажатий на кнопки

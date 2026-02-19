@@ -17,12 +17,11 @@ MainWidget::MainWidget(figure_t &figure, QWidget *parent) : QWidget(parent), ui(
    connect(ui->ButtonLoadFile, &QPushButton::clicked, this, &MainWidget::ButtonLoadFile_clicked);
    connect(ui->ButtonOpenDescrioption, &QPushButton::clicked, this, &MainWidget::ButtonOpenDescrioption_clicked);
    connect(ui->ButtonMoveFigure, &QPushButton::clicked, this, &MainWidget::ButtonMoveFigure_clicked);
-
-   figure_reset(this->figure);
 }
 
 MainWidget::~MainWidget()
 {
+   free_figure(this->figure);
    delete ui;
 }
 

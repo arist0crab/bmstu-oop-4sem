@@ -1,4 +1,6 @@
 #include "manager.h"
+#include <iostream>  // TODO
+using namespace std;  // TODO
 
 
 status_t manage_request(request_t &request, figure_t &figure)
@@ -7,7 +9,6 @@ status_t manage_request(request_t &request, figure_t &figure)
     switch (request.type)
     {
         case LOAD_FIGURE:
-            figure_reset(figure);
             sc = read_figure_from_file(figure, request.filename);
             break;
 

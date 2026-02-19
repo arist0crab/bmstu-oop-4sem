@@ -4,6 +4,7 @@
 typedef enum 
 {
     SUCCESS,
+    ERR_MEM,
     ERR_FILE,
     ERR_EMPTY,
     ERR_NULL_PTR,

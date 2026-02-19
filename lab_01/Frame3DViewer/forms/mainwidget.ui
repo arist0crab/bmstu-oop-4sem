@@ -238,7 +238,7 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox_8">
+           <widget class="QDoubleSpinBox" name="EnterScaleZ">
             <property name="minimum">
              <double>-100.000000000000000</double>
             </property>
@@ -248,7 +248,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox_7">
+           <widget class="QDoubleSpinBox" name="EnterScaleY">
             <property name="minimum">
              <double>-100.000000000000000</double>
             </property>
@@ -258,7 +258,7 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox_9">
+           <widget class="QDoubleSpinBox" name="EnterScaleX">
             <property name="minimum">
              <double>-100.000000000000000</double>
             </property>

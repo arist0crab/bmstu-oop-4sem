@@ -28,10 +28,10 @@ class MainWidget : public QWidget
         figure_t figure;
 
     private slots:
-        // обработка нажатий на кнопки
-        status_t ButtonMoveFigure_clicked();
-        status_t ButtonRotateFigure_clicked();
         status_t ButtonLoadFile_clicked();
+        status_t ButtonMoveFigure_clicked();
+        status_t ButtonScaleFigure_clicked();
+        status_t ButtonRotateFigure_clicked();
         status_t ButtonOpenDescrioption_clicked();
 };
 

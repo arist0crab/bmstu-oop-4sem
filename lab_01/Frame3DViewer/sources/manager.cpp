@@ -19,7 +19,7 @@ status_t manage_request(request_t &request, figure_t &figure)
             break;
 
         case SCALE_FIGURE:
-            // TODO
+            sc = scale_figure(figure, request.scale_data);
             break;
 
         case ROTATE_FIGURE:

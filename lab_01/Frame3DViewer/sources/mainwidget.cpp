@@ -18,6 +18,7 @@ MainWidget::MainWidget(figure_t &figure, QWidget *parent) : QWidget(parent), ui(
    connect(ui->ButtonOpenDescrioption, &QPushButton::clicked, this, &MainWidget::ButtonOpenDescrioption_clicked);
    connect(ui->ButtonMoveFigure, &QPushButton::clicked, this, &MainWidget::ButtonMoveFigure_clicked);
    connect(ui->ButtonRotateFigure, &QPushButton::clicked, this, &MainWidget::ButtonRotateFigure_clicked);
+   connect(ui->ButtonScaleFigure, &QPushButton::clicked, this, &MainWidget::ButtonScaleFigure_clicked);
 }
 
 MainWidget::~MainWidget()
@@ -49,6 +50,27 @@ status_t MainWidget::draw()
 }
 
 // обработка нажатий на кнопки
+
+status_t MainWidget::ButtonScaleFigure_clicked()
+{
+   status_t sc;
+   request_t request;
+   double kx, ky, kz;
+
+   kx = ui->EnterScaleX->value();
+   ky = ui->EnterScaleY->value();
+   kz = ui->EnterScaleZ->value();
+
+   request.type = SCALE_FIGURE;
+   request.scale_data = { kx, ky, kz };
+
+   sc = manage_request(request, this->figure);
+   if (sc == SUCCESS) sc = draw();
+
+   // TODO add error manager
+
+   return sc;
+}
 
 status_t MainWidget::ButtonMoveFigure_clicked()
 {

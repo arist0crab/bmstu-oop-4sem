@@ -14,11 +14,52 @@ status_t rotate_y_coordinate(point_t &point, const point_t &rotation_center, con
 status_t rotate_z_coordinate(point_t &point, const point_t &rotation_center, const double angle);
 status_t to_radians(const double degrees, double &radians);
 
+status_t scale_points(points_t &points, const point_t &scale_center, const scale_data_t &scale_data);
+status_t scale_point(point_t &point, const point_t &scale_center, const scale_data_t &scale_data);
+
 status_t figure_ensure_valid(figure_t &figure);
 
 status_t read_points_from_file(figure_t &figure, ifstream &filestream);
 status_t read_edges_from_file(figure_t &figure, ifstream &filestream);
 status_t free_figure(figure_t &figure);
+
+// ===================================
+// Масштабирование фигуры
+// ===================================
+
+status_t scale_figure(figure_t &figure, const scale_data_t &scale_data)
+{
+    status_t sc = figure_ensure_valid(figure);
+
+    if (sc == SUCCESS)
+    {
+        if (scale_data.kx == 0) sc = ERR_SCALE;
+        if (scale_data.ky == 0) sc = ERR_SCALE;
+        if (scale_data.kz == 0) sc = ERR_SCALE;
+    }
+
+    if (sc == SUCCESS)
+        scale_points(figure.points, figure.center, scale_data);
+
+    return sc;
+}
+
+status_t scale_points(points_t &points, const point_t &scale_center, const scale_data_t &scale_data)
+{
+    for (size_t i = 0; i < points.size; i++)
+        scale_point(points.array[i], scale_center, scale_data);
+
+    return SUCCESS;
+}
+
+status_t scale_point(point_t &point, const point_t &scale_center, const scale_data_t &scale_data)
+{
+    point.x = (point.x - scale_center.x) * scale_data.kx + scale_center.x;
+    point.y = (point.y - scale_center.y) * scale_data.ky + scale_center.y;
+    point.z = (point.z - scale_center.z) * scale_data.kz + scale_center.z;
+
+    return SUCCESS;
+}
 
 // ===================================
 // Поворот фигуры

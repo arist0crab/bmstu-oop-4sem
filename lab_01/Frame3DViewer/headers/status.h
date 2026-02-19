@@ -6,6 +6,7 @@ typedef enum
     SUCCESS,
     ERR_MEM,
     ERR_FILE,
+    ERR_SCALE,
     ERR_EMPTY,
     ERR_NULL_PTR,
     ERR_UNDEFINED,

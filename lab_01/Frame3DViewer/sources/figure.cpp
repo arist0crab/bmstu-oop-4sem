@@ -1,10 +1,12 @@
 #include "figure.h"
 
+status_t draw_lines(const points_t &points, const edges_t &edges, draw_scene_t &scene);
+status_t scene_reset(draw_scene_t &scene);
+
 status_t move_point(point_t &point, const move_data_t &move_data);
 status_t move_points(points_t &points, const move_data_t move_data);
 
-status_t check_figure_valid(const points_t &points, const vector<edge_t> &edges);
-status_t check_index_valid(const int array_size, const int index);
+status_t figure_ensure_valid(figure_t &figure);
 
 status_t read_points_from_file(figure_t &figure, ifstream &filestream);
 status_t read_edges_from_file(figure_t &figure, ifstream &filestream);
@@ -22,11 +24,9 @@ status_t free_figure(figure_t &figure);
 
 status_t move_figure(figure_t &figure, const move_data_t &move_data)
 {
-    status_t sc = check_figure_valid(figure.points, figure.edges);
+    status_t sc = figure_ensure_valid(figure);
 
-    if (sc != SUCCESS)
-        free_figure(figure);
-    else
+    if (sc == SUCCESS)
     {
         move_point(figure.center, move_data);
         move_points(figure.points, move_data);
@@ -59,28 +59,46 @@ status_t move_point(point_t &point, const move_data_t &move_data)
 status_t draw_figure(figure_t &figure, draw_scene_t &scene)
 {
     status_t sc;
-    point_t p1, p2;
-    double x1, y1, x2, y2; 
 
-    sc = check_figure_valid(figure.points, figure.edges);
-    if (sc == ERR_FIGURE_DATA) 
-        free_figure(figure);
+    sc = figure_ensure_valid(figure);
 
     if (sc == SUCCESS)
     {
-        scene.scene->clear();
-        for (const auto &edge : figure.edges)
-        {        
-            p1 = figure.points.array[edge.point_1];
-            p2 = figure.points.array[edge.point_2];
-            x1 = p1.x + scene.width / 2;
-            y1 = p1.y + scene.height / 2;
-            x2 = p2.x + scene.width / 2;
-            y2 = p2.y + scene.height / 2;
-            scene.scene->addLine(x1, y1, x2, y2);
-        }
+        scene_reset(scene);
+        draw_lines(figure.points, figure.edges, scene);
     }
     
+    return sc;
+}
+
+status_t scene_reset(draw_scene_t &scene)
+{
+    scene.scene->clear();
+    
+    return SUCCESS;
+}
+
+status_t draw_lines(const points_t &points, const edges_t &edges, draw_scene_t &scene)
+{
+    point_t p1, p2;
+    double x1, y1, x2, y2; 
+    edge_t current_edge;
+
+    for (size_t i = 0; i < edges.size; i++)
+    {
+        current_edge = edges.array[i];
+
+        p1 = points.array[current_edge.point_1];
+        p2 = points.array[current_edge.point_2];
+
+        x1 = p1.x + scene.width / 2;
+        y1 = p1.y + scene.height / 2;
+        x2 = p2.x + scene.width / 2;
+        y2 = p2.y + scene.height / 2;
+
+        scene.scene->addLine(x1, y1, x2, y2);
+    }
+
     return SUCCESS;
 }
 
@@ -95,19 +113,18 @@ status_t read_figure_from_file(figure_t &figure, const string filename)
     free_figure(figure);
 
     ifstream filestream(filename);
-    if (!filestream.is_open()) 
-        sc = ERR_FILE;
 
-    if (sc == SUCCESS)
+    if (filestream.is_open())
     {
         read_points_from_file(figure, filestream);
         read_edges_from_file(figure, filestream);
-        filestream.close();
     }
+    else sc = ERR_FILE;
 
-    sc = check_figure_valid(figure.points, figure.edges);
-    if (sc == ERR_FIGURE_DATA) 
-        free_figure(figure);
+    filestream.close();
+
+    if (sc == SUCCESS)
+        sc = figure_ensure_valid(figure);
 
     return sc;
 }
@@ -133,48 +150,37 @@ status_t read_points_from_file(figure_t &figure, ifstream &filestream)
 
 status_t read_edges_from_file(figure_t &figure, ifstream &filestream)
 {
-    size_t edges_quantity;
+    status_t sc;
     edge_t edge;
+    size_t edges_quantity;
 
     filestream >> edges_quantity;
+
+    sc = allocate_edges_array(figure.edges, edges_quantity);
     
     for (size_t i = 0; i < edges_quantity; i++)
     {
         filestream >> edge.point_1 >> edge.point_2;
-        figure.edges.push_back(edge);
+        push_back_edge(figure.edges, edge);
     }
 
-    return SUCCESS;
+    return sc;
 }
 
 // ===================================
 // Проверка валидности фигуры
 // ===================================
 
-status_t check_figure_valid(const points_t &points, const vector<edge_t> &edges)
+status_t figure_ensure_valid(figure_t &figure)
 {
-    status_t sc = SUCCESS;
-
-    if (points.size == 0 || edges.empty())    
-        sc = ERR_FIGURE_DATA;
-
-    // TODO проверить центр    
-
-    for (size_t i = 0; sc == SUCCESS && i < edges.size(); i++)
-    {
-        if (check_index_valid(points.size, edges[i].point_1))
-            sc = ERR_FIGURE_DATA;
-        if (check_index_valid(points.size, edges[i].point_2))
-            sc = ERR_FIGURE_DATA;
-    }   
-
-    return sc;
+    // TODO дописать
+    return SUCCESS;    
 }
 
-status_t check_index_valid(const int array_size, const int index)
-{
-    return (index < 0 || index >= array_size) ? ERR_OUT_OF_RANGE : SUCCESS;;
-}
+// status_t check_index_valid(const int array_size, const int index)
+// {
+//     return (index < 0 || index >= array_size) ? ERR_OUT_OF_RANGE : SUCCESS;;
+// }
 
 // ===================================
 // Освобождение фигуры
@@ -182,8 +188,9 @@ status_t check_index_valid(const int array_size, const int index)
 
 status_t free_figure(figure_t &figure)
 {
+    init_point(figure.center);
     free_points(figure.points);
-    figure.edges.clear();
+    free_edges(figure.edges);
 
     return SUCCESS;
 }
@@ -192,7 +199,7 @@ status_t init_figure(figure_t &figure)
 {
     init_point(figure.center);
     init_points(figure.points);
-    // TODO
+    init_edges(figure.edges);
 
     return SUCCESS;
 }

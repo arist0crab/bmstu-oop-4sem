@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
     figure_t figure;
     init_figure(figure);
-
+    
     MainWidget w(figure);
 
     w.show();

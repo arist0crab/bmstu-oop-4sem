@@ -3,22 +3,18 @@
 
 #include "status.h"
 #include "point.h"
+#include "edge.h"
 #include <QGraphicsScene>
 #include <vector>
 #include <fstream>
 #include <iostream>
 using namespace std;
 
-typedef struct
-{
-    int point_1;
-    int point_2;
-} edge_t;
 
 typedef struct
 {
     point_t center;
-    vector<edge_t> edges;
+    edges_t edges;
     points_t points;
 } figure_t;
 

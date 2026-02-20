@@ -1,6 +1,3 @@
-#include "description.h"
-#include "figure.h"
-#include "manager.h"
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
 
@@ -67,7 +64,7 @@ status_t MainWidget::ButtonScaleFigure_clicked()
    sc = manage_request(request, this->figure);
    if (sc == SUCCESS) sc = draw();
 
-   // TODO add error manager
+   show_error_message(sc, this);
 
    return sc;
 }
@@ -88,7 +85,7 @@ status_t MainWidget::ButtonMoveFigure_clicked()
    sc = manage_request(request, this->figure);
    if (sc == SUCCESS) sc = draw();
 
-   // TODO add error manager
+   show_error_message(sc, this);
 
    return sc;
 }
@@ -109,7 +106,7 @@ status_t MainWidget::ButtonRotateFigure_clicked()
    sc = manage_request(request, this->figure);
    if (sc == SUCCESS) sc = draw();
 
-   // TODO add error manager
+   show_error_message(sc, this);
 
    return sc;
 }
@@ -127,14 +124,13 @@ status_t MainWidget::ButtonLoadFile_clicked()
    sc = manage_request(request, this->figure);
    if (sc == SUCCESS) sc = draw();
 
-   // TODO add error manager   
+   show_error_message(sc, this);
 
    return sc;
 }
 
 status_t MainWidget::ButtonOpenDescrioption_clicked()
 {
-   QMessageBox::information(this, Description::TITLE,  Description::ABOUT_PROGRAM);
-
+   show_description_message(this);
    return SUCCESS;
 }

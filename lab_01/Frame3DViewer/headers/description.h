@@ -13,4 +13,31 @@ namespace Description
     "(нумерация начинается с 0).";
 }
 
+namespace ErrorMessage
+{
+    const char *ERR_MEM_TITLE = "Ошибка работы с памятью";
+    const char *ERR_MEM_TEXT = "Произошла ошибка при работе с памятью. Я не знаю что с этим делать и что советовать.";
+
+    const char *ERR_FILE_TITLE = "Ошибка работы с памятью";
+    const char *ERR_FILE_TEXT = "Произошла ошибка при работе с файлом. Пожалуйста, проверьте его содержимое.";
+
+    const char *ERR_SCALE_TITLE = "Ошибка масштабирования";
+    const char *ERR_SCALE_TEXT = "Произошла ошибка масштабирования, проверьте входные данные: в них не должно быть нулей.";
+
+    const char *ERR_EMPTY_TITLE = "Пустая фигура";
+    const char *ERR_EMPTY_TEXT = "Произошла ошибка обработки фигуры: не хватает каких-либо данных. Пожалуйста, выберите другую фигуру.";
+
+    const char *ERR_NULL_PTR_TITLE = "Ошибка работы с указателем";
+    const char *ERR_NULL_PTR_TEXT = "Произошла ошибка обработки указателя. Я не знаю что с этим делать и что советовать.";
+
+    const char *ERR_UNDEFINED_TITLE = "Неизвестная ошибка";
+    const char *ERR_UNDEFINED_TEXT = "Произошла неизвестная ошибка. Я не знаю что с этим делать и что советовать.";
+
+    const char *ERR_FIGURE_DATA_TITLE = "Ошибка обработки фигуры";
+    const char *ERR_FIGURE_DATA_TEXT = "Произошла ошибка обработки фигуры. Пожалуйста, выберите другую фигуру или проверьте корректность данных в файле.";
+
+    const char *ERR_OUT_OF_RANGE_TITLE = "Выход за пределы чего-нибудь";
+    const char *ERR_OUT_OF_RANGE_TEXT = "Произошел выход за пределы массива. Я не знаю что с этим делать и что советовать.";
+}
+
 #endif

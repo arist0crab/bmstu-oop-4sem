@@ -3,6 +3,7 @@
 
 #include "status.h"
 #include "figure.h"
+#include "manager.h"
 #include <QWidget>
 #include <QGridLayout>
 #include <QFileDialog>

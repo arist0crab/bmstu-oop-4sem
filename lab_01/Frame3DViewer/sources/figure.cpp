@@ -17,7 +17,11 @@ status_t to_radians(const double degrees, double &radians);
 status_t scale_points(points_t &points, const point_t &scale_center, const scale_data_t &scale_data);
 status_t scale_point(point_t &point, const point_t &scale_center, const scale_data_t &scale_data);
 
-status_t figure_ensure_valid(figure_t &figure);
+status_t figure_ensure_valid(const figure_t &figure);
+status_t check_edges_indexes(const points_t &points, const edges_t &edges);
+status_t check_edge_indexes(const int &points_size, const edge_t &edge);
+status_t check_figure_empty(const points_t &points, const edges_t &edges_t);
+
 
 status_t read_points_from_file(figure_t &figure, ifstream &filestream);
 status_t read_edges_from_file(figure_t &figure, ifstream &filestream);
@@ -295,10 +299,40 @@ status_t read_edges_from_file(figure_t &figure, ifstream &filestream)
 // Проверка валидности фигуры
 // ===================================
 
-status_t figure_ensure_valid(figure_t &figure)
+status_t figure_ensure_valid(const figure_t &figure)
 {
-    // TODO дописать
-    return SUCCESS;    
+    status_t sc = check_figure_empty(figure.points, figure.edges);
+    if (sc == SUCCESS)
+        sc = check_edges_indexes(figure.points, figure.edges);
+    return sc;    
+}
+
+status_t check_edges_indexes(const points_t &points, const edges_t &edges)
+{
+    status_t sc = SUCCESS;
+
+    for (size_t i = 0; sc == SUCCESS && i < edges.size; i++)
+        sc = check_edge_indexes(points.size, edges.array[i]);
+
+    return sc;
+}
+
+status_t check_edge_indexes(const int &points_size, const edge_t &edge)
+{
+    status_t sc = SUCCESS;
+
+    int i1 = edge.point_1;
+    int i2 = edge.point_2;
+
+    if (i1 < 0 || i1 >= points_size || i2 < 0 || i2 >= points_size)
+        sc = ERR_FIGURE_DATA;
+
+    return sc;
+}
+
+status_t check_figure_empty(const points_t &points, const edges_t &edges)
+{
+    return (points.size == 0 || edges.size == 0) ? ERR_EMPTY : SUCCESS;    
 }
 
 // status_t check_index_valid(const int array_size, const int index)
